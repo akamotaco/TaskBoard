@@ -137,6 +137,20 @@ Example: (?:Issue)?#(\d+)"
                         <em>Administrators have access to all projects, whether or not they are selected here.</em>
                     </p>
                 </div>
+                <div class="form-group short-top">
+                    <h5>Permission</h5>
+                    <div class="half-width" data-ng-repeat="user in users">
+                        <label class="wide">
+                            <input type="checkbox" data-ng-model="boardFormData.permissions[user.id]"
+                                   data-ng-disabled="boardFormData.isSaving">
+                            {{ user.username }}
+                        </label>
+                    </div>
+                    <div class="clearfix"></div>
+                    <p class="small clearfix short-top">
+                        <em>Administrators have access to all projects, whether or not they are selected here.</em>
+                    </p>
+                </div>
                 <div class="modal-footer">
                     <button type="submit" id="modalAddBoard" class="btn btn-info" data-ng-click="addBoard(boardFormData)"
                             data-ng-if="boardFormData.isAdd" data-ng-disabled="boardFormData.isSaving">

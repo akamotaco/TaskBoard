@@ -205,6 +205,7 @@ function ($scope, BoardService) {
             $('#spectrum').spectrum('enable');
             $scope.spectrum(defaultColor);
             this.users = [];
+            this.permissions = [];
             this.nameError = false;
             this.lanesError = false;
             this.categoriesError = false;

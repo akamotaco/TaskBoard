@@ -4,6 +4,7 @@ function ($scope, UserService, AlertService) {
     $scope.alerts = AlertService;
 
     $scope.users = [];
+    $scope.permissions = [];
     $scope.boards = [];
     $scope.boardNames = [];
 

@@ -241,6 +241,7 @@ function loadBoardData($board, $data) {
         R::store($tracker);
     }
 
+    
     // Add or remove users as selected.
     for($i = 1; $i < count($data->users); $i++) {
         $user = R::load('user', $i);
@@ -250,11 +251,19 @@ function loadBoardData($board, $data) {
             unset($board->sharedUser[$i]);
         }
     }
-
+    
     // Add all admin users.
     foreach(getUsers(false) as $user) {
         if ($user->isAdmin && !in_array($user, $board->sharedUser)) {
             $board->sharedUser[] = $user;
+        }
+        if ($user->isAdmin && !in_array($user, $board->sharedPermission)) {
+            $permission = R::dispense('permission');
+            $permission->userId = $user->id;
+            $permission->boardId = $board->id;
+            $permission->level = 3; // 0:read only, 1:comment only, 2:manager, 3:admin
+            $board->sharedPermission[] = $permission;
+            R::store($permission);
         }
     }
 
