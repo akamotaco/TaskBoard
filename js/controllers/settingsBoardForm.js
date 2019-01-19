@@ -14,6 +14,7 @@ function ($scope, BoardService) {
         categoryName: '',
         color: defaultColor,
         users: [],
+        permissions: [],
         nameError: false,
         lanesError: false,
         categoriesError: false,
@@ -41,6 +42,8 @@ function ($scope, BoardService) {
         },
         setBoard: function(board) {
             this.reset();
+
+            console.log(board);
 
             this.isAdd = false;
             this.boardId = board.id;
@@ -78,6 +81,13 @@ function ($scope, BoardService) {
                     that.users[user.id] = true;
                 });
             }
+            if (undefined !== board.sharedPermission) {
+                board.sharedUser.forEach(function(user) {
+                    that.permissions[user.id] = true;
+                });
+            }
+
+            console.log(board);
 
             this.updateLanesSorting();
         },

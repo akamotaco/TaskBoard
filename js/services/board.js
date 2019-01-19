@@ -18,7 +18,8 @@ function($http) {
                 lanes: boardData.lanes,
                 categories: boardData.categories,
                 trackers: boardData.trackers,
-                users: boardData.users
+                users: boardData.users,
+                permissions: boardData.permissions
             });
         },
 
@@ -29,7 +30,8 @@ function($http) {
                 lanes: boardData.lanes,
                 categories: boardData.categories,
                 trackers: boardData.trackers,
-                users: boardData.users
+                users: boardData.users,
+                permissions: boardData.permissions
             });
         },
 
