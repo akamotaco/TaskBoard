@@ -188,6 +188,8 @@ function loadBoardData($board, $data) {
     $board->name = $data->name;
     $board->active = true;
 
+    R::store($board);
+
     $removeIds = getIdsToRemove($board->xownLane, $data->lanes);
     foreach($removeIds as $id) {
         unset($board->xownLane[$id]);
@@ -251,21 +253,54 @@ function loadBoardData($board, $data) {
             unset($board->sharedUser[$i]);
         }
     }
+
+    // for($i = 1; $i < count($data->permissions); $i++) {
+        // $permission = R::load('permission',)
+        // $permission = R::find('permission', '');
+    // foreach($data->permissions as $ownerId) {
+    for($i = 1; $i < count($data->permissions); $i++) {
+        $user = R::load('user',$i);
+        if(!$data->permissions[$i]) continue;
+        $permission = R::findOne('permission',' user_id = ? ',array($user->id));
+        if($permission == null && !in_array($permission, $board->sharedPermission)) {
+            $permission = R::dispense('permission');
+            $permission->userId = $user->id;
+            $permission->boardId = $board->id;
+            $permission->level = 2; // 0:read only, 1:comment only, 2:manager, 3:admin
+
+            $board->sharedPermission[] = $permission;
+            R::store($permission);
+
+        // if ($data->users[$i] && $user->id && !in_array($user, $board->sharedPermission)) {
+            // $permission = R::dispense('permission');
+            // $permission->userId = $user->id;
+            // $permission->boardId = $board->id;
+            // $permission->level = 2; // 0:read only, 1:comment only, 2:manager, 3:admin
+
+            // $board->sharedPermission[] = $permission;
+            // R::store($permission);
+        } else {
+            unset($board->sharedPermission[$i]);
+        }
+    }
     
     // Add all admin users.
     foreach(getUsers(false) as $user) {
         if ($user->isAdmin && !in_array($user, $board->sharedUser)) {
             $board->sharedUser[] = $user;
         }
-        if ($user->isAdmin && !in_array($user, $board->sharedPermission)) {
-            $permission = R::dispense('permission');
-            $permission->userId = $user->id;
-            $permission->boardId = $board->id;
-            $permission->level = 3; // 0:read only, 1:comment only, 2:manager, 3:admin
-            $board->sharedPermission[] = $permission;
-            R::store($permission);
-        }
+
+        // if ($user->isAdmin && !in_array($user, $board->sharedOwner)) {
+        //     $board->sharedOwner[] = $user;
+        // }
     }
+    
+    // foreach(R::findall('permission') as $permission) {
+    //     $user = R::load('user',$permission->userId);
+    //     if ($user->isAdmin && !in_array($user, $board->sharedPermission)) {
+    //         $board->sharedPermission[] = $permission;
+    //     }
+    // }
 
     R::store($board);
 }

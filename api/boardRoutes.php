@@ -20,7 +20,7 @@ $app->post('/boards', function() use($app, $jsonResponse) {
         logAction($actor->username . ' added board ' . $board->name, null, $board->export());
         $jsonResponse->addBeans(getBoards());
         $jsonResponse->addAlert('success', 'New board ' . $board->name . ' created.');
-
+        
         foreach($board->sharedUser as $user) {
             $body = getNewBoardEmailBody($board->id, $user->username, $board->name);
             $subject = 'TaskBoard: New board created!';
@@ -74,12 +74,20 @@ $app->post('/boards/remove', function() use($app, $jsonResponse) {
                     R::store($user);
                 }
             }
+
+            // R::trash($board->$sharedPermission);
+            // R::exec('DELETE from permission WHERE board_id = ?', array($data->boardId));
+            
             R::trashAll($board->xownLane);
             R::trashAll($board->xownCategory);
             R::trashAll($board->xownAutoaction);
             R::trashAll($board->xownTracker);
             R::trash($board);
             R::exec('DELETE from board_user WHERE board_id = ?', array($data->boardId));
+
+            R::exec('DELETE from board_permission WHERE board_id = ?', array($data->boardId));
+            R::exec('DELETE from permission WHERE board_id = ?', array($data->boardId));
+
             $jsonResponse->addAlert('success', 'Removed board ' . $board->name . '.');
             $actor = getUser();
             logAction($actor->username . ' removed board ' . $board->name, $before, null);
