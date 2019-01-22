@@ -43,7 +43,7 @@ function ($scope, BoardService) {
         setBoard: function(board) {
             this.reset();
 
-            console.log(board);
+            // console.log(board);
 
             this.isAdd = false;
             this.boardId = board.id;
@@ -82,13 +82,13 @@ function ($scope, BoardService) {
                 });
             }
             if (undefined !== board.sharedPermission) {
-                console.log(board.sharedPermission)
+                // console.log(board.sharedPermission)
                 board.sharedPermission.forEach(function(perm) {
                     that.permissions[perm.user_id] = true;
                 });
             }
 
-            console.log(board);
+            // console.log(board);
 
             this.updateLanesSorting();
         },
