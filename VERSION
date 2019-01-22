@@ -1,4 +1,4 @@
-v0.3.1
+v0.3.2b
 
 Changelog
 
@@ -7,3 +7,4 @@ Changelog
  * Fix boards button bug.
  * Fix modal display bug.
  * Allow email to be reset to nothing.
+ * 분할 보드 관리 시스템 추가 (2019/01/23)
