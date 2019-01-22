@@ -131,4 +131,20 @@ function ($scope, $interval, BoardService) {
             ]
         });
     };
+
+    $scope.filtercustom = function(userid,boardid,permissions) {
+        console.log(userid);
+        console.log(permissions);
+
+        for (i = 0, len = permissions.length; i < len; ++i) {
+            check_userid = (userid == permissions[i].user_id);
+            check_boardid = (boardid == permissions[i].board_id);
+            check_level = (2 <= permissions[i].level);
+
+            if(check_userid && check_boardid && check_level)
+                return true;
+        }
+
+        return false;
+    }
 }]);

@@ -82,8 +82,9 @@ function ($scope, BoardService) {
                 });
             }
             if (undefined !== board.sharedPermission) {
-                board.sharedUser.forEach(function(user) {
-                    that.permissions[user.id] = true;
+                console.log(board.sharedPermission)
+                board.sharedPermission.forEach(function(perm) {
+                    that.permissions[perm.user_id] = true;
                 });
             }
 

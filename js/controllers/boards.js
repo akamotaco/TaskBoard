@@ -288,4 +288,9 @@ function ($scope, $routeParams, $location, $interval, $window,
         });
     };
     $scope.updateCurrentUser();
+
+    $scope.filtercustom = function() {
+        console.log('customfilter')
+        return true;
+    }
 }]);
