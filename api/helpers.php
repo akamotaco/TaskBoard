@@ -350,6 +350,12 @@ function updateEmail($user, $data) {
     return $user;
 }
 
+function getUserLevel($user) {
+    $level = R::findOne('permission',' user_id = ? AND level >= 2',array($user->id)); // highest level == 2
+    if($level == null) return false;
+    return true;
+}
+
 // Validate a provided JWT.
 function validateToken($requireAdmin = false) {
     global $jsonResponse, $app;
@@ -365,7 +371,8 @@ function validateToken($requireAdmin = false) {
 
     if ($retVal && $requireAdmin) {
         $user = getUser();
-        if (!$user->isAdmin) {
+        $highestlevel = getUserLevel($user);
+        if (!$user->isAdmin && !$highestlevel) {
             clearDbToken();
             $jsonResponse->message = 'Insufficient user privileges.';
             $app->response->setStatus(401);
