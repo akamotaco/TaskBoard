@@ -57,7 +57,7 @@
                     <td>
                         <!-- <span class="links" data-ng-if="(currentUser.isAdmin == '1' || (board.sharedPermission | some: perm.user_id == currentUser.userId && perm.board_id == board.id)) && !isDeleting[board.id]"> -->
                             <!-- <span class="links" data-ng-if="(currentUser.isAdmin == '1' || (board.sharedPermission | contains: permission.user_id == 2)) && !isDeleting[board.id]"> -->
-                        <span class="links" data-ng-if="(currentUser.isAdmin == '1' || filtercustom(currentUser.userId,board.id,board.sharedPermission)) && !isDeleting[board.id]">
+                        <span class="links" data-ng-if="(currentUser.isAdmin == '1' || levelFilter(currentUser.userId,board.id,board.sharedPermission,2)) && !isDeleting[board.id]">
                             <a class="fa fa-edit" title="Edit Board"
                                data-toggle="modal" data-target=".boardModal"
                                data-ng-click="boardFormData.setBoard(board)"></a>
@@ -77,7 +77,18 @@
                 </tr>
             </tbody>
         </table>
-        <div data-ng-if="currentUser.isAdmin == '1'">
+
+        <div data-ng-if="currentUser.highestlevel = 0"></div>
+        <div data-ng-repeat="board in boards | orderBy:boardSort.sort | filter:boardsFilter | filter:boardsUserFilter">
+            <!-- <div data-ng-if="highestlevel = board.sharedPermission.level > highestlevel ? board.sharedPermission.level : highestlevel"></div>
+            {{highestlevel}}
+            {{board.sharedPermission.level}} -->
+            <div data-ng-if="getlevel = getHighestLevel(currentUser.userId,board.id,board.sharedPermission)"></div>
+            <div data-ng-if="currentUser.highestlevel = getlevel > currentUser.highestlevel ? getlevel : currentUser.highestlevel"></div>
+            <!-- {{currentUser.highestlevel}} -->
+        </div>
+        <!-- {{currentUser.highestlevel}} -->
+        <div data-ng-if="currentUser.isAdmin == '1' || currentUser.highestlevel >= 3">
             <p><a role="button" id="addBoard" class="btn btn-info" data-toggle="modal" data-target=".boardModal" data-ng-click="boardFormData.reset()" title="Add Board"><span class="fa fa-plus"></span> Add Board</a></p>
         </div>
     </div>

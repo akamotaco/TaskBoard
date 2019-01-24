@@ -132,19 +132,36 @@ function ($scope, $interval, BoardService) {
         });
     };
 
-    $scope.filtercustom = function(userid,boardid,permissions) {
+    $scope.levelFilter = function(userid,boardid,permissions,level) {
         // console.log(userid);
         // console.log(permissions);
 
         for (i = 0, len = permissions.length; i < len; ++i) {
             check_userid = (userid == permissions[i].user_id);
-            check_boardid = (boardid == permissions[i].board_id);
-            check_level = (2 <= permissions[i].level);
+            check_boardid = boardid === undefined ? true : (boardid == permissions[i].board_id);
+            check_level = level === undefined ? true : (level <= permissions[i].level);
 
             if(check_userid && check_boardid && check_level)
                 return true;
         }
 
         return false;
+    }
+
+    $scope.getHighestLevel = function(userid,boardid,permissions) {
+        if(permissions === undefined) return 0;
+        
+        level = 0;
+        for (i = 0, len = permissions.length; i < len; ++i) {
+            check_userid = (userid == permissions[i].user_id);
+            check_boardid = boardid === undefined ? true : (boardid == permissions[i].board_id);
+
+            if(check_userid && check_boardid) {
+                level = permissions[i].level > level ? permissions[i].level : level;
+            }
+        }
+        // console.log(level);
+
+        return level;
     }
 }]);

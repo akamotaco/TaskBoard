@@ -128,7 +128,8 @@ Example: (?:Issue)?#(\d+)"
                     <div class="half-width" data-ng-repeat="user in users">
                         <label class="wide">
                             <input type="checkbox" data-ng-model="boardFormData.users[user.id]"
-                                   data-ng-disabled="boardFormData.isSaving">
+                                   data-ng-disabled="boardFormData.isSaving || (currentUser.userId == user.id) || user.is_admin == '1'"
+                                   data-ng-checked="(currentUser.userId == user.id) || user.is_admin == '1'">
                             {{ user.username }}
                         </label>
                     </div>
@@ -142,7 +143,8 @@ Example: (?:Issue)?#(\d+)"
                     <div class="half-width" data-ng-repeat="user in users">
                         <label class="wide">
                             <input type="checkbox" data-ng-model="boardFormData.permissions[user.id]"
-                                   data-ng-disabled="boardFormData.isSaving">
+                                data-ng-disabled="boardFormData.isSaving || (currentUser.userId == user.id) || user.is_admin == '1'"
+                                data-ng-checked="(currentUser.userId == user.id) || user.is_admin == '1'">
                             {{ user.username }}
                         </label>
                     </div>

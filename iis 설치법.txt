@@ -1,0 +1,3 @@
+- iis에 사이트 등록후, application 모드로 변경
+- api 및 하위 내역에 IUSR 계정에 쓰기 궈한 부여
+- taskboard 폴더 내에서 composer install 을 통해 vendor 설치

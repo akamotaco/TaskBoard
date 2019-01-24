@@ -57,10 +57,17 @@ function getUser() {
             $payload = JWT::decode($hash, getJwtKey());
             $user = R::load('user', $payload->uid);
 
+            // file_put_contents('getuser_payload.txt', print_r($payload->uid,TRUE));
+
             if ($user->id) {
                 return $user;
             }
-        } catch (Exception $e) {}
+        } catch (Exception $e) {
+            // file_put_contents('getuser_Exception.txt', print_r($e,TRUE));
+        }
+    }
+    else {
+        // file_put_contents('getuser_Authorization.txt', print_r($gah,TRUE));
     }
 
     $jsonResponse->addAlert('error', 'Unable to load user. Please try again.');
@@ -244,9 +251,9 @@ function loadBoardData($board, $data) {
     }
 
     
-    // file_put_contents('test001.txt', print_r($data,TRUE));
-    // file_put_contents('test002.txt', print_r($board,TRUE));
-    
+    file_put_contents('test001.txt', print_r($data,TRUE));
+    file_put_contents('test002.txt', print_r($board,TRUE));
+
     // Add or remove users as selected.
     for($i = 1; $i < count($data->users); $i++) {
         $user = R::load('user', $i);
@@ -275,7 +282,7 @@ function loadBoardData($board, $data) {
                 $permission = R::dispense('permission');
                 $permission->userId = $user->id;
                 $permission->boardId = $board->id;
-                $permission->level = 2; // 0:read only, 1:comment only, 2:manager, 3:admin
+                $permission->level = 3; // 0:read only, 1:comment only, 2:single board manager(writable), 3:multiboard manager, 5:admin
 
                 $board->sharedPermission[] = $permission;
                 R::store($permission);
@@ -351,7 +358,7 @@ function updateEmail($user, $data) {
 }
 
 function getUserLevel($user) {
-    $level = R::findOne('permission',' user_id = ? AND level >= 2',array($user->id)); // highest level == 2
+    $level = R::findOne('permission',' user_id = ? AND level >= 2',array($user->id)); // writable level == 2
     if($level == null) return false;
     return true;
 }
@@ -398,6 +405,12 @@ function checkDbToken() {
                 }
             }
         }
+        else {
+            // file_put_contents('nulluseAuthorizationError.txt', print_r($user,TRUE));
+        }
+    }
+    else {
+        // file_put_contents('nulluser.txt', print_r($user,TRUE));
     }
 
     return $isValid;
