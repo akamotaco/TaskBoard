@@ -199,7 +199,7 @@ function ($scope, $interval, BoardService) {
             $scope.loadingActions = false;
         });
     };
-    $interval($scope.loadActions, 2000);
+    $interval($scope.loadActions, 10000); // interval 제거
 
     // Wait until boards are loaded to load the actions.
     $scope.$watch('loadingBoards', function() {

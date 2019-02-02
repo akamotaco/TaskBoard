@@ -1,4 +1,4 @@
-v0.3.2.0.1a
+v0.3.2.0.2a
 
 Changelog
 
@@ -8,3 +8,4 @@ Changelog
  * Fix modal display bug.
  * Allow email to be reset to nothing.
  * 분할 보드 관리 시스템 추가 (2019/01/23)
+ * 보드 업데이트 횟수 제약 (2019/02/03)

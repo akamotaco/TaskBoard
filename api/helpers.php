@@ -251,8 +251,8 @@ function loadBoardData($board, $data) {
     }
 
     
-    file_put_contents('test001.txt', print_r($data,TRUE));
-    file_put_contents('test002.txt', print_r($board,TRUE));
+    // file_put_contents('test001.txt', print_r($data,TRUE));
+    // file_put_contents('test002.txt', print_r($board,TRUE));
 
     // Add or remove users as selected.
     for($i = 1; $i < count($data->users); $i++) {

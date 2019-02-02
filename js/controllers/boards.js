@@ -101,6 +101,10 @@ function ($scope, $routeParams, $location, $interval, $window,
             $interval.cancel($scope.interval);
             $location.path('boards/' + $scope.currentUser.defaultBoard);
         }
+        // console.log($scope.boardsLoaded);
+        // console.log($scope.boardId);
+        // console.log($scope.currentUser);
+        // console.log(parseInt($scope.currentUser.defaultBoard));
     };
     $scope.interval = $interval(checkDefaultBoard, 250);
     $scope.$on('$destroy', function () { $interval.cancel($scope.interval); });
@@ -118,7 +122,8 @@ function ($scope, $routeParams, $location, $interval, $window,
     };
 
     var pendingResponse = false,
-        updateCounter = 0;
+        updateCounter = 0,
+        needRefresh = true; // update board at first
 
     $scope.isActiveFilter = function(element) {
         var retVal = false;
@@ -136,6 +141,13 @@ function ($scope, $routeParams, $location, $interval, $window,
             if (pendingResponse || updateCounter) {
                 return;
             }
+
+            if(false == needRefresh) {
+                return;
+            }
+
+            needRefresh = false;
+            // console.log("pr:"+pendingResponse + "/uc"+updateCounter)
 
             pendingResponse = true;
             BoardService.getBoards()
@@ -229,10 +241,12 @@ function ($scope, $routeParams, $location, $interval, $window,
     $scope.toggleLane = function(lane) {
         lane.collapsed = !lane.collapsed;
         updateCounter++;
+        needRefresh=true;
 
         BoardService.toggleLane(lane.id)
         .success(function(data) {
             updateCounter--;
+            needRefresh=true;
             $scope.updateBoards(data);
         });
     };
@@ -273,9 +287,11 @@ function ($scope, $routeParams, $location, $interval, $window,
 
     $scope.updatePositions = function(positionArray) {
         updateCounter++;
+        needRefresh=true;
         BoardService.updateItemPositions(positionArray)
         .success(function(data) {
             updateCounter--;
+            needRefresh=true;
             $scope.updateBoards(data);
         });
     };
