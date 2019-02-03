@@ -45,7 +45,7 @@ function ($scope, BoardService) {
         },
         quickAddItem: function(laneId) {
             $('.itemModal').on('show.bs.modal', function(e) {
-                e.stopPropogation(); // 에러? (Object doesn't support property or method 'stopPropogation')
+                e.stopPropagation();
             });
             this.title = $scope.quickAdd.title[laneId];
             $scope.submitItem(this);
