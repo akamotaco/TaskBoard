@@ -44,7 +44,7 @@ function ($scope, BoardService) {
             });
         },
         setBoard: function(board,all_users) {
-            console.log(all_users);
+            // console.log(all_users);
             this.reset();
 
             // console.log(board);
@@ -103,7 +103,7 @@ function ($scope, BoardService) {
                         }
                     }
                     else {
-                        console.log(user.username);
+                        // console.log(user.username);
                         data = {"id":user.id,"username":user.username,"level":0};
                         that.PermissionList.Lv0.push(data);
                     }
