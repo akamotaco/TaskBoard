@@ -122,7 +122,7 @@ Example: (?:Issue)?#(\d+)"
                                 data-ng-disabled="boardFormData.isSaving"></button>
                     </form>
                 </div>
-                <div class="clearfix"></div>
+                <!-- <div class="clearfix"></div>
                 <div class="form-group short-top">
                     <h5>Select Users</h5>
                     <div class="half-width" data-ng-repeat="user in users">
@@ -137,63 +137,50 @@ Example: (?:Issue)?#(\d+)"
                     <p class="small clearfix short-top">
                         <em>Administrators have access to all projects, whether or not they are selected here.</em>
                     </p>
-                </div>
+                </div> -->
 
                 <!-- Main area with dropzones and source code -->
                 <div>
+                    <h5>Permission</h5>
                     <ul class="quater-width" dnd-list="boardFormData.PermissionList.Lv3">
                         Manager
-                        <li ng-repeat="user in boardFormData.PermissionList.Lv3"
+                        <li class="list-group-item small" ng-repeat="user in boardFormData.PermissionList.Lv3"
                         dnd-draggable="user"
                         dnd-moved="boardFormData.PermissionList.Lv3.splice($index, 1)"
                         dnd-effect-allowed="move">
-                        <!-- data-ng-show="boardFormData.permissions[user.id] == 3" -->
-                            <!-- dnd-selected="boardFormData.selected = item"> -->
-                            <!-- ng-class="{'selected': boardFormData.selected === item}"> -->
                             {{user.username}}
-                            {{user.level}}
                         </li>
                     </ul>
                     <ul class="quater-width" dnd-list="boardFormData.PermissionList.Lv2">
                         User
-                        <li ng-repeat="user in boardFormData.PermissionList.Lv2"
+                        <li class="list-group-item small" ng-repeat="user in boardFormData.PermissionList.Lv2"
                         dnd-draggable="user"
                         dnd-moved="boardFormData.PermissionList.Lv2.splice($index, 1)"
                         dnd-effect-allowed="move">
-                        <!-- data-ng-show="boardFormData.permissions[user.id] == 2" -->
-                            <!-- dnd-selected="boardFormData.selected = item"> -->
-                            <!-- ng-class="{'selected': boardFormData.selected === item}"> -->
                             {{user.username}}
-                            {{user.level}}
                         </li>
                     </ul>
                     <ul class="quater-width" dnd-list="boardFormData.PermissionList.Lv1">
                         Viewer
-                        <li ng-repeat="user in boardFormData.PermissionList.Lv1"
+                        <li class="list-group-item small" ng-repeat="user in boardFormData.PermissionList.Lv1"
                         dnd-draggable="user"
                         dnd-moved="boardFormData.PermissionList.Lv1.splice($index, 1)"
                         dnd-effect-allowed="move">
-                            <!-- dnd-selected="boardFormData.selected = item"> -->
-                            <!-- ng-class="{'selected': boardFormData.selected === item}"> -->
                             {{user.username}}
-                            {{user.level}}
                         </li>
                     </ul>
                     <ul class="quater-width" dnd-list="boardFormData.PermissionList.Lv0">
                         None
-                        <li ng-repeat="user in boardFormData.PermissionList.Lv0"
+                        <li class="list-group-item small" ng-repeat="user in boardFormData.PermissionList.Lv0"
                         dnd-draggable="user"
                         dnd-moved="boardFormData.PermissionList.Lv0.splice($index, 1)"
                         dnd-effect-allowed="move">
-                            <!-- dnd-selected="boardFormData.selected = item"> -->
-                            <!-- ng-class="{'selected': boardFormData.selected === item}"> -->
                             {{user.username}}
-                            {{user.level}}
                         </li>
                     </ul>
                 </div>
 
-                <div class="form-group short-top">
+                <!-- <div class="form-group short-top">
                     <h5>Permission</h5>
                     <div class="half-width" data-ng-repeat="user in users">
                         <label class="wide">
@@ -207,7 +194,7 @@ Example: (?:Issue)?#(\d+)"
                     <p class="small clearfix short-top">
                         <em>Administrators have access to all projects, whether or not they are selected here.</em>
                     </p>
-                </div>
+                </div> -->
                 <div class="modal-footer">
                     <button type="submit" id="modalAddBoard" class="btn btn-info" data-ng-click="addBoard(boardFormData)"
                             data-ng-if="boardFormData.isAdd" data-ng-disabled="boardFormData.isSaving">

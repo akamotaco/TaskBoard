@@ -255,14 +255,14 @@ function loadBoardData($board, $data) {
     // file_put_contents('test002.txt', print_r($board,TRUE));
 
     // Add or remove users as selected.
-    for($i = 1; $i < count($data->users); $i++) {
-        $user = R::load('user', $i);
-        if ($data->users[$i] && $user->id && !in_array($user, $board->sharedUser)) {
-            $board->sharedUser[] = $user;
-        } else {
-            unset($board->sharedUser[$i]);
-        }
-    }
+    // for($i = 1; $i < count($data->users); $i++) {
+    //     $user = R::load('user', $i);
+    //     if ($data->users[$i] && $user->id && !in_array($user, $board->sharedUser)) {
+    //         $board->sharedUser[] = $user;
+    //     } else {
+    //         unset($board->sharedUser[$i]);
+    //     }
+    // }
 
     // print_r("Printing Variable: " . $varName );
     // print_r("Printing Variable: ");
