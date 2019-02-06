@@ -268,36 +268,94 @@ function loadBoardData($board, $data) {
     // print_r("Printing Variable: ");
     // error_log("hello world");
 
-// 수정: 추가/삭제는 동작하나, 업데이트 시 제대로 동작하지 않음
-    for($i = 1; $i < count($data->permissions); $i++) {
-        $toggle = $data->permissions[$i] != null;
-        $user = R::load('user',$i);
-        // $permission = R::findOne('permission',' user_id = ? ',array($user->id));
-        $permission = R::findOne('permission',' user_id = ? AND board_id = ?',array($user->id,$board->id));
-        // $permission = R::findOne('permission',' user_id = :uid AND board_id = :bid ',array(':uid' => $user->id, ':bid' => $board->id));
-        // file_put_contents('test020.txt', print_r($permission,TRUE));
-        // if($permission == null && !in_array($permission, $board->sharedPermission)) {
-        if($toggle) {
-            if($permission == null) {
-                $permission = R::dispense('permission');
-                $permission->userId = $user->id;
-                $permission->boardId = $board->id;
-                $permission->level = 3; // 0:read only, 1:comment only, 2:single board manager(writable), 3:multiboard manager, 5:admin
+    // save
+    // 0:read only, 1:comment only, 2:single board manager(writable), 3:multiboard manager, 5:admin
+    for($i=0;$i<count($data->permissionList->Lv3);++$i) {
+        $level = 3;
+        $user_data = $data->permissionList->Lv3[$i];
+        $user = R::load('user', $user_data->id);
+        $permission = R::findOne('permission',' user_id = ? AND board_id = ?',array($user_data->id,$board->id));
 
-                $board->sharedPermission[] = $permission;
-                R::store($permission);
-            }
-        } else {
-            // file_put_contents('test020_null.txt', print_r($permission,TRUE));
+        if($level > 0) {
+            if($permission == null)
+                $permission = R::dispense('permission');
+            $permission->userId = $user_data->id;
+            $permission->boardId = $board->id;
+            $permission->level = $level;
+
+            $board->sharedPermission[] = $permission;
+            R::store($permission);
+
+            if (!in_array($user, $board->sharedUser))
+                $board->sharedUser[] = $user;
+        }
+        else { // $level == 0
             if($permission != null) {
-                // file_put_contents('test020_not_null.txt', print_r($permission,TRUE));
-                // unset($board->sharedPermission[$i]);
-                // unset($permission);
                 R::trash(R::findOne('board_permission','permission_id = ?',array($permission->id)));
                 R::trash($permission);
+                R::trash(R::findOne('board_user','user_id = ? AND board_id = ?',array($user_data->id,$board->id)));
             }
         }
     }
+    for($i=0;$i<count($data->permissionList->Lv0);++$i) {
+        $level = 0;
+        $user_data = $data->permissionList->Lv0[$i];
+        $user = R::load('user', $user_data->id);
+        $permission = R::findOne('permission',' user_id = ? AND board_id = ?',array($user_data->id,$board->id));
+
+        if($level > 0) {
+            if($permission == null)
+                $permission = R::dispense('permission');
+            $permission->userId = $user_data->id;
+            $permission->boardId = $board->id;
+            $permission->level = $level;
+
+            $board->sharedPermission[] = $permission;
+            R::store($permission);
+
+            if (!in_array($user, $board->sharedUser))
+                $board->sharedUser[] = $user;
+        }
+        else { // $level == 0
+            if($permission != null) {
+                R::trash(R::findOne('board_permission','permission_id = ?',array($permission->id)));
+                R::trash($permission);
+                R::trash(R::findOne('board_user','user_id = ? AND board_id = ?',array($user_data->id,$board->id)));
+            }
+        }
+    }
+    //
+
+// 수정: 추가/삭제는 동작하나, 업데이트 시 제대로 동작하지 않음
+    // for($i = 1; $i < count($data->permissions); $i++) {
+    //     $toggle = $data->permissions[$i] != null;
+    //     $user = R::load('user',$i);
+    //     // $permission = R::findOne('permission',' user_id = ? ',array($user->id));
+    //     $permission = R::findOne('permission',' user_id = ? AND board_id = ?',array($user->id,$board->id));
+    //     // $permission = R::findOne('permission',' user_id = :uid AND board_id = :bid ',array(':uid' => $user->id, ':bid' => $board->id));
+    //     // file_put_contents('test020.txt', print_r($permission,TRUE));
+    //     // if($permission == null && !in_array($permission, $board->sharedPermission)) {
+    //     if($toggle) {
+    //         if($permission == null) {
+    //             $permission = R::dispense('permission');
+    //             $permission->userId = $user->id;
+    //             $permission->boardId = $board->id;
+    //             $permission->level = 3; // 0:read only, 1:comment only, 2:single board manager(writable), 3:multiboard manager, 5:admin
+
+    //             $board->sharedPermission[] = $permission;
+    //             R::store($permission);
+    //         }
+    //     } else {
+    //         // file_put_contents('test020_null.txt', print_r($permission,TRUE));
+    //         if($permission != null) {
+    //             // file_put_contents('test020_not_null.txt', print_r($permission,TRUE));
+    //             // unset($board->sharedPermission[$i]);
+    //             // unset($permission);
+    //             R::trash(R::findOne('board_permission','permission_id = ?',array($permission->id)));
+    //             R::trash($permission);
+    //         }
+    //     }
+    // }
     
     // Add all admin users.
     foreach(getUsers(false) as $user) {

@@ -19,7 +19,8 @@ function($http) {
                 categories: boardData.categories,
                 trackers: boardData.trackers,
                 users: boardData.users,
-                permissions: boardData.permissions
+                permissions: boardData.permissions,
+                permissionList: boardData.PermissionList
             });
         },
 
@@ -31,7 +32,8 @@ function($http) {
                 categories: boardData.categories,
                 trackers: boardData.trackers,
                 users: boardData.users,
-                permissions: boardData.permissions
+                permissions: boardData.permissions,
+                permissionList: boardData.PermissionList
             });
         },
 

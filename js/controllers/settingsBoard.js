@@ -132,6 +132,12 @@ function ($scope, $interval, BoardService) {
         });
     };
 
+    // $scope.getUserName = function(userid,shareduser) {
+    //     shareduser.forEach(function(user) {
+    //         if(user.id == userid) return user.username;
+    //     });
+    //     return 'undefined';
+    // }
     $scope.levelFilter = function(userid,boardid,permissions,level) {
         // console.log(userid);
         // console.log(permissions);

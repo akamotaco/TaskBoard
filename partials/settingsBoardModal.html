@@ -138,6 +138,61 @@ Example: (?:Issue)?#(\d+)"
                         <em>Administrators have access to all projects, whether or not they are selected here.</em>
                     </p>
                 </div>
+
+                <!-- Main area with dropzones and source code -->
+                <div>
+                    <ul class="quater-width" dnd-list="boardFormData.PermissionList.Lv3">
+                        Manager
+                        <li ng-repeat="user in boardFormData.PermissionList.Lv3"
+                        dnd-draggable="user"
+                        dnd-moved="boardFormData.PermissionList.Lv3.splice($index, 1)"
+                        dnd-effect-allowed="move">
+                        <!-- data-ng-show="boardFormData.permissions[user.id] == 3" -->
+                            <!-- dnd-selected="boardFormData.selected = item"> -->
+                            <!-- ng-class="{'selected': boardFormData.selected === item}"> -->
+                            {{user.username}}
+                            {{user.level}}
+                        </li>
+                    </ul>
+                    <ul class="quater-width" dnd-list="boardFormData.PermissionList.Lv2">
+                        User
+                        <li ng-repeat="user in boardFormData.PermissionList.Lv2"
+                        dnd-draggable="user"
+                        dnd-moved="boardFormData.PermissionList.Lv2.splice($index, 1)"
+                        dnd-effect-allowed="move">
+                        <!-- data-ng-show="boardFormData.permissions[user.id] == 2" -->
+                            <!-- dnd-selected="boardFormData.selected = item"> -->
+                            <!-- ng-class="{'selected': boardFormData.selected === item}"> -->
+                            {{user.username}}
+                            {{user.level}}
+                        </li>
+                    </ul>
+                    <ul class="quater-width" dnd-list="boardFormData.PermissionList.Lv1">
+                        Viewer
+                        <li ng-repeat="user in boardFormData.PermissionList.Lv1"
+                        dnd-draggable="user"
+                        dnd-moved="boardFormData.PermissionList.Lv1.splice($index, 1)"
+                        dnd-effect-allowed="move">
+                            <!-- dnd-selected="boardFormData.selected = item"> -->
+                            <!-- ng-class="{'selected': boardFormData.selected === item}"> -->
+                            {{user.username}}
+                            {{user.level}}
+                        </li>
+                    </ul>
+                    <ul class="quater-width" dnd-list="boardFormData.PermissionList.Lv0">
+                        None
+                        <li ng-repeat="user in boardFormData.PermissionList.Lv0"
+                        dnd-draggable="user"
+                        dnd-moved="boardFormData.PermissionList.Lv0.splice($index, 1)"
+                        dnd-effect-allowed="move">
+                            <!-- dnd-selected="boardFormData.selected = item"> -->
+                            <!-- ng-class="{'selected': boardFormData.selected === item}"> -->
+                            {{user.username}}
+                            {{user.level}}
+                        </li>
+                    </ul>
+                </div>
+
                 <div class="form-group short-top">
                     <h5>Permission</h5>
                     <div class="half-width" data-ng-repeat="user in users">

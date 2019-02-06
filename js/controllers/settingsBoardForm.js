@@ -4,6 +4,9 @@ function ($scope, BoardService) {
     var defaultColor = '#ffffe0';
 
     $scope.boardFormData = {
+
+        PermissionList: {"Lv3":[],"Lv2":[],"Lv1":[],"Lv0":[]},
+
         setFocus: false,
         boardId: 0,
         isAdd: true,
@@ -40,7 +43,8 @@ function ($scope, BoardService) {
                 }
             });
         },
-        setBoard: function(board) {
+        setBoard: function(board,all_users) {
+            console.log(all_users);
             this.reset();
 
             // console.log(board);
@@ -83,6 +87,28 @@ function ($scope, BoardService) {
             }
             if (undefined !== board.sharedPermission) {
                 // console.log(board.sharedPermission)
+                
+                all_users.forEach(function(user) {
+                    perm = board.sharedPermission.find(function (perm){return perm.user_id == user.id;});
+                    
+                    if(perm !== undefined) {
+                        that.permissions[perm.user_id] = perm.level;
+                        data = {"id":perm.user_id,"username":user.username,"level":perm.level};
+                        
+                        switch(perm.level)
+                        {
+                            case '3': that.PermissionList.Lv3.push(data); break;
+                            case '2': that.PermissionList.Lv2.push(data); break;
+                            case '1': that.PermissionList.Lv1.push(data); break;
+                        }
+                    }
+                    else {
+                        console.log(user.username);
+                        data = {"id":user.id,"username":user.username,"level":0};
+                        that.PermissionList.Lv0.push(data);
+                    }
+                });
+
                 board.sharedPermission.forEach(function(perm) {
                     that.permissions[perm.user_id] = true;
                 });
@@ -203,7 +229,19 @@ function ($scope, BoardService) {
             this.isSaving = false;
             $scope.alerts.showAlert({ 'type': 'error', 'text': message });
         },
-        reset: function() {
+        reset: function(all_users=undefined) {
+            this.PermissionList = {"Lv3":[],"Lv2":[],"Lv1":[],"Lv0":[]};
+
+            // add user compoenets
+            if(all_users !== undefined) {
+                for (var i = 0, len = all_users.length; i < len; i++) {
+                    var user = all_users[i];
+                    data = {"id":user.id,"username":user.username,"level":0};
+                    this.PermissionList.Lv0.push(data);
+                  }
+            }
+            //
+
             this.setFocus = true;
             this.boardId = 0;
             this.isAdd = true;

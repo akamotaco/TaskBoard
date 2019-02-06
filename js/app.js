@@ -7,7 +7,8 @@ var taskBoard = angular.module('TaskBoard',
                                 'ng-context-menu',
                                 'TaskBoardServices',
                                 'TaskBoardControllers',
-                                'TaskBoardDirectives']);
+                                'TaskBoardDirectives',
+                                'dndLists']);
 
 taskBoard.config(['$routeProvider', '$httpProvider',
 function($routeProvider, $httpProvider) {
