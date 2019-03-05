@@ -297,6 +297,60 @@ function loadBoardData($board, $data) {
             }
         }
     }
+    for($i=0;$i<count($data->permissionList->Lv2);++$i) {
+        $level = 0;
+        $user_data = $data->permissionList->Lv2[$i];
+        $user = R::load('user', $user_data->id);
+        $permission = R::findOne('permission',' user_id = ? AND board_id = ?',array($user_data->id,$board->id));
+
+        if($level > 0) {
+            if($permission == null)
+                $permission = R::dispense('permission');
+            $permission->userId = $user_data->id;
+            $permission->boardId = $board->id;
+            $permission->level = $level;
+
+            $board->sharedPermission[] = $permission;
+            R::store($permission);
+
+            if (!in_array($user, $board->sharedUser))
+                $board->sharedUser[] = $user;
+        }
+        else { // $level == 0
+            if($permission != null) {
+                R::trash(R::findOne('board_permission','permission_id = ?',array($permission->id)));
+                R::trash($permission);
+                R::trash(R::findOne('board_user','user_id = ? AND board_id = ?',array($user_data->id,$board->id)));
+            }
+        }
+    }
+    for($i=0;$i<count($data->permissionList->Lv1);++$i) {
+        $level = 0;
+        $user_data = $data->permissionList->Lv1[$i];
+        $user = R::load('user', $user_data->id);
+        $permission = R::findOne('permission',' user_id = ? AND board_id = ?',array($user_data->id,$board->id));
+
+        if($level > 0) {
+            if($permission == null)
+                $permission = R::dispense('permission');
+            $permission->userId = $user_data->id;
+            $permission->boardId = $board->id;
+            $permission->level = $level;
+
+            $board->sharedPermission[] = $permission;
+            R::store($permission);
+
+            if (!in_array($user, $board->sharedUser))
+                $board->sharedUser[] = $user;
+        }
+        else { // $level == 0
+            if($permission != null) {
+                R::trash(R::findOne('board_permission','permission_id = ?',array($permission->id)));
+                R::trash($permission);
+                R::trash(R::findOne('board_user','user_id = ? AND board_id = ?',array($user_data->id,$board->id)));
+            }
+        }
+    }
     for($i=0;$i<count($data->permissionList->Lv0);++$i) {
         $level = 0;
         $user_data = $data->permissionList->Lv0[$i];

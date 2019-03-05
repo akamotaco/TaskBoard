@@ -113,8 +113,15 @@ function ($scope, BoardService) {
                     that.permissions[perm.user_id] = true;
                 });
             }
+            else if(undefined !== all_users) { // board.sharedPermission이 없는 경우 모두 Lv0으로 설정
+                all_users.forEach(function(user) {
+                    data = {"id":user.id,"username":user.username,"level":0};
+                    that.PermissionList.Lv0.push(data);
+                });
+            }
 
             // console.log(board);
+            // console.log(all_users);
 
             this.updateLanesSorting();
         },
