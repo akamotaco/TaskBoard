@@ -20,7 +20,9 @@ function($http) {
                 trackers: boardData.trackers,
                 users: boardData.users,
                 permissions: boardData.permissions,
-                permissionList: boardData.PermissionList
+                permissionList: boardData.PermissionList,
+
+                current_user: boardData.current_user
             });
         },
 
@@ -33,7 +35,9 @@ function($http) {
                 trackers: boardData.trackers,
                 users: boardData.users,
                 permissions: boardData.permissions,
-                permissionList: boardData.PermissionList
+                permissionList: boardData.PermissionList,
+
+                current_user: boardData.current_user
             });
         },
 

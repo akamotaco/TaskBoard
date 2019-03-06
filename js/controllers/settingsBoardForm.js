@@ -5,6 +5,7 @@ function ($scope, BoardService) {
 
     $scope.boardFormData = {
 
+        current_user: '',
         PermissionList: {"Lv3":[],"Lv2":[],"Lv1":[],"Lv0":[]},
 
         setFocus: false,
@@ -43,11 +44,12 @@ function ($scope, BoardService) {
                 }
             });
         },
-        setBoard: function(board,all_users) {
+        setBoard: function(board,all_users,current_user='') {
             // console.log(all_users);
             this.reset();
 
             // console.log(board);
+            this.current_user = current_user;
 
             this.isAdd = false;
             this.boardId = board.id;
@@ -236,7 +238,8 @@ function ($scope, BoardService) {
             this.isSaving = false;
             $scope.alerts.showAlert({ 'type': 'error', 'text': message });
         },
-        reset: function(all_users=undefined) {
+        reset: function(all_users=undefined,current_user='') {
+            this.current_user = current_user;
             this.PermissionList = {"Lv3":[],"Lv2":[],"Lv1":[],"Lv0":[]};
 
             // add user compoenets

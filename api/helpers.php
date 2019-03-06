@@ -270,30 +270,39 @@ function loadBoardData($board, $data) {
 
     // save
     // 0:read only, 1:comment only, 2:single board manager(writable), 3:multiboard manager, 5:admin
+    $current_user = $data->current_user;
+
     for($i=0;$i<count($data->permissionList->Lv3);++$i) {
         $level = 3;
         $user_data = $data->permissionList->Lv3[$i];
         $user = R::load('user', $user_data->id);
         $permission = R::findOne('permission',' user_id = ? AND board_id = ?',array($user_data->id,$board->id));
 
-        if($level > 0) {
-            if($permission == null)
-                $permission = R::dispense('permission');
-            $permission->userId = $user_data->id;
-            $permission->boardId = $board->id;
-            $permission->level = $level;
+        if ($user->isAdmin && !in_array($user, $board->sharedUser)) // check admin
+            $board->sharedUser[] = $user;
+        else
+        {
+            if($user->id == $current_user->userId) // check current user
+                $level = 3;
+            if($level > 0) {
+                if($permission == null)
+                    $permission = R::dispense('permission');
+                $permission->userId = $user_data->id;
+                $permission->boardId = $board->id;
+                $permission->level = $level;
 
-            $board->sharedPermission[] = $permission;
-            R::store($permission);
+                $board->sharedPermission[] = $permission;
+                R::store($permission);
 
-            if (!in_array($user, $board->sharedUser))
-                $board->sharedUser[] = $user;
-        }
-        else { // $level == 0
-            if($permission != null) {
-                R::trash(R::findOne('board_permission','permission_id = ?',array($permission->id)));
-                R::trash($permission);
-                R::trash(R::findOne('board_user','user_id = ? AND board_id = ?',array($user_data->id,$board->id)));
+                if (!in_array($user, $board->sharedUser))
+                    $board->sharedUser[] = $user;
+            }
+            else { // $level == 0
+                if($permission != null) {
+                    R::trash(R::findOne('board_permission','permission_id = ?',array($permission->id)));
+                    R::trash($permission);
+                    R::trash(R::findOne('board_user','user_id = ? AND board_id = ?',array($user_data->id,$board->id)));
+                }
             }
         }
     }
@@ -303,24 +312,31 @@ function loadBoardData($board, $data) {
         $user = R::load('user', $user_data->id);
         $permission = R::findOne('permission',' user_id = ? AND board_id = ?',array($user_data->id,$board->id));
 
-        if($level > 0) {
-            if($permission == null)
-                $permission = R::dispense('permission');
-            $permission->userId = $user_data->id;
-            $permission->boardId = $board->id;
-            $permission->level = $level;
+        if ($user->isAdmin && !in_array($user, $board->sharedUser))
+            $board->sharedUser[] = $user;
+        else
+        {
+            if($user->id == $current_user->userId)
+                $level = 3;
+            if($level > 0) {
+                if($permission == null)
+                    $permission = R::dispense('permission');
+                $permission->userId = $user_data->id;
+                $permission->boardId = $board->id;
+                $permission->level = $level;
 
-            $board->sharedPermission[] = $permission;
-            R::store($permission);
+                $board->sharedPermission[] = $permission;
+                R::store($permission);
 
-            if (!in_array($user, $board->sharedUser))
-                $board->sharedUser[] = $user;
-        }
-        else { // $level == 0
-            if($permission != null) {
-                R::trash(R::findOne('board_permission','permission_id = ?',array($permission->id)));
-                R::trash($permission);
-                R::trash(R::findOne('board_user','user_id = ? AND board_id = ?',array($user_data->id,$board->id)));
+                if (!in_array($user, $board->sharedUser))
+                    $board->sharedUser[] = $user;
+            }
+            else { // $level == 0
+                if($permission != null) {
+                    R::trash(R::findOne('board_permission','permission_id = ?',array($permission->id)));
+                    R::trash($permission);
+                    R::trash(R::findOne('board_user','user_id = ? AND board_id = ?',array($user_data->id,$board->id)));
+                }
             }
         }
     }
@@ -330,24 +346,31 @@ function loadBoardData($board, $data) {
         $user = R::load('user', $user_data->id);
         $permission = R::findOne('permission',' user_id = ? AND board_id = ?',array($user_data->id,$board->id));
 
-        if($level > 0) {
-            if($permission == null)
-                $permission = R::dispense('permission');
-            $permission->userId = $user_data->id;
-            $permission->boardId = $board->id;
-            $permission->level = $level;
+        if ($user->isAdmin && !in_array($user, $board->sharedUser))
+            $board->sharedUser[] = $user;
+        else
+        {
+            if($user->id == $current_user->userId)
+                $level = 3;
+            if($level > 0) {
+                if($permission == null)
+                    $permission = R::dispense('permission');
+                $permission->userId = $user_data->id;
+                $permission->boardId = $board->id;
+                $permission->level = $level;
 
-            $board->sharedPermission[] = $permission;
-            R::store($permission);
+                $board->sharedPermission[] = $permission;
+                R::store($permission);
 
-            if (!in_array($user, $board->sharedUser))
-                $board->sharedUser[] = $user;
-        }
-        else { // $level == 0
-            if($permission != null) {
-                R::trash(R::findOne('board_permission','permission_id = ?',array($permission->id)));
-                R::trash($permission);
-                R::trash(R::findOne('board_user','user_id = ? AND board_id = ?',array($user_data->id,$board->id)));
+                if (!in_array($user, $board->sharedUser))
+                    $board->sharedUser[] = $user;
+            }
+            else { // $level == 0
+                if($permission != null) {
+                    R::trash(R::findOne('board_permission','permission_id = ?',array($permission->id)));
+                    R::trash($permission);
+                    R::trash(R::findOne('board_user','user_id = ? AND board_id = ?',array($user_data->id,$board->id)));
+                }
             }
         }
     }
@@ -357,24 +380,31 @@ function loadBoardData($board, $data) {
         $user = R::load('user', $user_data->id);
         $permission = R::findOne('permission',' user_id = ? AND board_id = ?',array($user_data->id,$board->id));
 
-        if($level > 0) {
-            if($permission == null)
-                $permission = R::dispense('permission');
-            $permission->userId = $user_data->id;
-            $permission->boardId = $board->id;
-            $permission->level = $level;
+        if ($user->isAdmin && !in_array($user, $board->sharedUser))
+            $board->sharedUser[] = $user;
+        else
+        {
+            if($user->id == $current_user->userId)
+                $level = 3;
+            if($level > 0) {
+                if($permission == null)
+                    $permission = R::dispense('permission');
+                $permission->userId = $user_data->id;
+                $permission->boardId = $board->id;
+                $permission->level = $level;
 
-            $board->sharedPermission[] = $permission;
-            R::store($permission);
+                $board->sharedPermission[] = $permission;
+                R::store($permission);
 
-            if (!in_array($user, $board->sharedUser))
-                $board->sharedUser[] = $user;
-        }
-        else { // $level == 0
-            if($permission != null) {
-                R::trash(R::findOne('board_permission','permission_id = ?',array($permission->id)));
-                R::trash($permission);
-                R::trash(R::findOne('board_user','user_id = ? AND board_id = ?',array($user_data->id,$board->id)));
+                if (!in_array($user, $board->sharedUser))
+                    $board->sharedUser[] = $user;
+            }
+            else { // $level == 0
+                if($permission != null) {
+                    R::trash(R::findOne('board_permission','permission_id = ?',array($permission->id)));
+                    R::trash($permission);
+                    R::trash(R::findOne('board_user','user_id = ? AND board_id = ?',array($user_data->id,$board->id)));
+                }
             }
         }
     }
@@ -410,25 +440,6 @@ function loadBoardData($board, $data) {
     //         }
     //     }
     // }
-    
-    // Add all admin users.
-    foreach(getUsers(false) as $user) {
-        if ($user->isAdmin && !in_array($user, $board->sharedUser)) {
-            $board->sharedUser[] = $user;
-        }
-
-        // if ($user->isAdmin && !in_array($user, $board->sharedOwner)) {
-        //     $board->sharedOwner[] = $user;
-        // }
-    }
-    
-    // foreach(R::findall('permission') as $permission) {
-    //     $user = R::load('user',$permission->userId);
-    //     if ($user->isAdmin && !in_array($user, $board->sharedPermission)) {
-    //         $board->sharedPermission[] = $permission;
-    //     }
-    // }
-
     R::store($board);
 }
 
