@@ -54,7 +54,7 @@ function($routeProvider, $httpProvider) {
 // Custom handlers for route authentication and rejection of invalid board id
 taskBoard.run(['$rootScope', '$location', '$window', 'AuthenticationService',
 function($rootScope, $location, $window, AuthenticationService) {
-    $rootScope.version = 'v0.3.2.3';
+    $rootScope.version = 'v0.3.2.4';
 
     $rootScope.$on('$routeChangeStart', function(event, nextRoute, currentRoute) {
         // Redirect to default path if authentication is required but not present.
