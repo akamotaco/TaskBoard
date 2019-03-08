@@ -140,7 +140,7 @@ function ($scope, $interval, BoardService) {
     // }
     $scope.levelFilter = function(userid,boardid,permissions,level) {
         // console.log(userid);
-        // console.log(permissions);
+        console.log(permissions);
 
         for (i = 0, len = permissions.length; i < len; ++i) {
             check_userid = (userid == permissions[i].user_id);
