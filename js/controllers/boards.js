@@ -121,6 +121,17 @@ function ($scope, $routeParams, $location, $interval, $window,
         name: 'Kanban Board App'
     };
 
+    $scope.isWritable = function(currentUser, currentBoard) {
+        if(currentUser.userId == undefined || currentBoard.sharedPermission == undefined) return false;
+        if(currentUser == undefined || currentBoard == undefined) return false;
+
+        for(var permission of currentBoard.sharedPermission) {
+            if(permission.user_id == currentUser.userId && permission.level >= 2)
+                return true;
+        }
+        return false;
+    };
+
     var pendingResponse = false,
         updateCounter = 0,
         needRefresh = true; // update board at first

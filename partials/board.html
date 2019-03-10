@@ -1,5 +1,6 @@
 <div include-replace="partials/header.html"></div>
 <div id="board-nav">
+
     <p class="pull-left form-group form-inline">
         Select Board:
         <select class="form-control" data-ng-model="boardNames.current" data-ng-change="selectBoard()"
@@ -82,17 +83,15 @@
                             </span>
                         </p>
                     </div>
-                    <div data-ng-repeat="permission in currentBoard.sharedPermission">
-                        <div class="addItem form-inline" data-ng-if="permission.user_id == currentUser.userId && permission.level >= 2">
-                            <input class="form-control" type="text" data-ng-model="quickAdd.title[lane.id]" placeholder="Quick Add Item Title - Leave Blank for Dialog">
-                            <a role="button" class="btn btn-default fa fa-plus form-control" data-toggle="modal"
-                            data-target=".itemModal" data-ng-click="itemFormData.reset(lane.id)" title="Add Item"></a>
-                        </div>
+                    <div class="addItem form-inline" data-ng-if="isWritable(currentUser,currentBoard)">
+                        <input class="form-control" type="text" data-ng-model="quickAdd.title[lane.id]" placeholder="Quick Add Item Title - Leave Blank for Dialog">
+                        <a role="button" class="btn btn-default fa fa-plus form-control" data-toggle="modal"
+                        data-target=".itemModal" data-ng-click="itemFormData.reset(lane.id)" title="Add Item"></a>
                     </div>
-                    <span data-on-load-callback="updateSortables"></span>
+                    <span data-on-load-callback="updateSortables" data-ng-if="isWritable(currentUser,currentBoard)"></span>
                 </div>
             </div>
-            <div id="itemMenu" class="dropdown fixed">
+            <div id="itemMenu" class="dropdown fixed" data-ng-if="isWritable(currentUser,currentBoard)"> <!--드롭다운 메뉴-->
                 <ul class="dropdown-menu" role="menu">
                     <li role="presentation">
                         <a role="menuitem" class="default-cursor" data-ng-click="openItem(contextItem)">
@@ -128,7 +127,7 @@
                     </li>
                 </ul>
             </div>
-            <div id="laneMenu" class="dropdown fixed">
+            <div id="laneMenu" class="dropdown fixed" data-ng-if="isWritable(currentUser,currentBoard)">
                 <ul class="dropdown-menu" role="menu">
                     <li role="presentation">
                         <a role="menuitem" class="default-cursor" data-ng-click="openAddItem()">
